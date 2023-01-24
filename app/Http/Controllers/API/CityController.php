@@ -21,6 +21,15 @@ class CityController extends Controller
             return $q->where('name', 'LIKE', '%' . request('name') . '%');
         });
 
+        //edited
+        $city->when(request('vehicle_type'), function ($q) {
+            return $q->where('vehicle_type', 'LIKE', '%' . request('vehicle_type') . '%');
+        });
+        $city->when(request('order_type'), function ($q) {
+            return $q->where('order_type', 'LIKE', '%' . request('order_type') . '%');
+        });
+        //edited
+
         if( $request->has('status') && isset($request->status) )
         {
             $city = $city->where('status',request('status'));
