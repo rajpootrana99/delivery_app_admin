@@ -45,10 +45,10 @@ class OrderController extends Controller
 
         $result = Order::updateOrCreate(['id' => $request->id], $data);
 
-        $message = __('message.update_form',[ 'form' => __('message.order') ] );
-		if($result->wasRecentlyCreated){
-			$message = __('message.save_form',[ 'form' => __('message.order') ] );
-		}
+        $message = __('message.update_form', ['form' => __('message.order')]);
+        if ($result->wasRecentlyCreated) {
+            $message = __('message.save_form', ['form' => __('message.order')]);
+        }
 
         $history_data = [
             'history_type' => $result->status,
@@ -57,38 +57,38 @@ class OrderController extends Controller
         ];
         saveOrderHistory($history_data);
 
-        if( $result->status == 'create' ) {
+        if ($result->status == 'create') {
             $app_setting = AppSetting::first();
-            if( isset($app_setting) && $app_setting->auto_assign == 1 ) {
+            if (isset($app_setting) && $app_setting->auto_assign == 1) {
                 $this->autoAssignOrder($result, $request->all());
             }
         }
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             $response = [
                 'order_id' => $result->id,
                 'message' => $message
             ];
             return json_custom_response($response);
-		}
+        }
     }
 
     public function AutoAssignCancelOrder(Request $request)
     {
         $order_data = Order::find($request->id);
 
-        $result = $this->autoAssignOrder($order_data,$request->all());
+        $result = $this->autoAssignOrder($order_data, $request->all());
 
         $message = __('message.updated');
-        if( $result->delivery_man_id == null ) {
-            $message = __('message.save_form',[ 'form' => __('message.order') ] );
+        if ($result->delivery_man_id == null) {
+            $message = __('message.save_form', ['form' => __('message.order')]);
         }
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             $response = [
                 'order_id' => $result->id,
                 'message' => $message
             ];
             return json_custom_response($response);
-		}
+        }
     }
 
     /**
@@ -130,17 +130,17 @@ class OrderController extends Controller
 
         uploadMediaFile($order, $request->pickup_time_signature, 'pickup_time_signature');
         uploadMediaFile($order, $request->delivery_time_signature, 'delivery_time_signature');
-        $message = __('message.update_form',[ 'form' => __('message.order') ] );
+        $message = __('message.update_form', ['form' => __('message.order')]);
 
-        $payment = Payment::where('order_id',$id)->first();
+        $payment = Payment::where('order_id', $id)->first();
 
-        if(in_array(request('status'), ['delayed', 'cancelled', 'failed']) ) {
+        if (in_array(request('status'), ['delayed', 'cancelled', 'failed'])) {
             $history_data = [
                 'history_type' => request('status'),
                 'order_id' => $id,
                 'order' => $order,
             ];
-        
+
             saveOrderHistory($history_data);
         }
 
@@ -162,20 +162,20 @@ class OrderController extends Controller
             saveOrderHistory($history_data);
         } */
 
-        if(in_array(request('status'), ['courier_picked_up', 'courier_arrived', 'completed', 'courier_departed']) ) {
+        if (in_array(request('status'), ['courier_picked_up', 'courier_arrived', 'completed', 'courier_departed'])) {
             $history_data = [
                 'history_type' => request('status'),
                 'order_id' => $id,
                 'order' => $order,
             ];
-            
+
             saveOrderHistory($history_data);
         }
 
-        
-        if($request->is('api/*')) {
+
+        if ($request->is('api/*')) {
             return json_message_response($message);
-		}
+        }
     }
 
     /**
@@ -187,39 +187,38 @@ class OrderController extends Controller
     public function destroy($id)
     {
         $order = Order::find($id);
-        $message = __('message.msg_fail_to_delete',['item' => __('message.order')] );
-        
-        if( $order != '' ) {
+        $message = __('message.msg_fail_to_delete', ['item' => __('message.order')]);
+
+        if ($order != '') {
             $order->delete();
-            $message = __('message.msg_deleted',['name' => __('message.order')] );
+            $message = __('message.msg_deleted', ['name' => __('message.order')]);
         }
-        
-        if(request()->is('api/*')){
-            return json_custom_response(['message'=> $message , 'status' => true]);
+
+        if (request()->is('api/*')) {
+            return json_custom_response(['message' => $message, 'status' => true]);
         }
     }
 
     public function action(Request $request)
     {
         $id = $request->id;
-        $order = Order::withTrashed()->where('id',$id)->first();
+        $order = Order::withTrashed()->where('id', $id)->first();
 
-        $message = __('message.not_found_entry',['name' => __('message.order')] );
-        if($request->type === 'restore'){
+        $message = __('message.not_found_entry', ['name' => __('message.order')]);
+        if ($request->type === 'restore') {
             $order->restore();
-            $message = __('message.msg_restored',['name' => __('message.order')] );
+            $message = __('message.msg_restored', ['name' => __('message.order')]);
         }
 
-        if($request->type === 'forcedelete'){
+        if ($request->type === 'forcedelete') {
             $order->forceDelete();
-            $search = "id".'":'.$id;
-            Notification::where('data','like',"%{$search}%")->delete();
-            $message = __('message.msg_forcedelete',['name' => __('message.order')] );
+            $search = "id" . '":' . $id;
+            Notification::where('data', 'like', "%{$search}%")->delete();
+            $message = __('message.msg_forcedelete', ['name' => __('message.order')]);
         }
 
-        if($request->type == 'courier_assigned') {
-            if($order->delivery_man_id != null)
-            {
+        if ($request->type == 'courier_assigned') {
+            if ($order->delivery_man_id != null) {
                 $message = __('message.couriertransfer');
                 $history_type = 'courier_transfer';
             } else {
@@ -233,32 +232,32 @@ class OrderController extends Controller
                 'order_id' => $id,
                 'order' => $order,
             ];
-            
+
             saveOrderHistory($history_data);
         }
 
-        if($request->type == 'courier_departed') {
-            $order->update([ 'status' => $request->status ]);
+        if ($request->type == 'courier_departed') {
+            $order->update(['status' => $request->status]);
             $history_data = [
                 'history_type' => 'courier_departed',
                 'order_id' => $id,
                 'order' => $order,
             ];
-            
+
             saveOrderHistory($history_data);
         }
 
-        if($request->type == 'completed') {
-            $order->update([ 'status' => $request->type ]);
+        if ($request->type == 'completed') {
+            $order->update(['status' => $request->type]);
             $history_data = [
                 'history_type' => 'completed',
                 'order_id' => $id,
                 'order' => $order,
             ];
-            
+
             saveOrderHistory($history_data);
         }
 
-        return json_custom_response(['message'=> $message, 'status' => true ]);
+        return json_custom_response(['message' => $message, 'status' => true]);
     }
 }
