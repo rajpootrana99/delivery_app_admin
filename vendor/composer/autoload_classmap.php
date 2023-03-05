@@ -65,6 +65,7 @@ return array(
     'App\\Models\\Country' => $baseDir . '/app/Models/Country.php',
     'App\\Models\\CreditCard' => $baseDir . '/app/Models/CreditCard.php',
     'App\\Models\\DeliveryManDocument' => $baseDir . '/app/Models/DeliveryManDocument.php',
+    'App\\Models\\DeliveryPoint' => $baseDir . '/app/Models/DeliveryPoint.php',
     'App\\Models\\Document' => $baseDir . '/app/Models/Document.php',
     'App\\Models\\ExtraCharge' => $baseDir . '/app/Models/ExtraCharge.php',
     'App\\Models\\Notification' => $baseDir . '/app/Models/Notification.php',

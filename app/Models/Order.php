@@ -15,7 +15,7 @@ class Order extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
 
-    protected $fillable = [ 'client_id', 'date', 'pickup_point', 'delivery_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge' , 'total_parcel' , 'auto_assign', 'cancelled_delivery_man_ids' ];
+    protected $fillable = ['client_id', 'date', 'pickup_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'auto_assign', 'cancelled_delivery_man_ids'];
 
     protected $casts = [
         'client_id' => 'integer',
@@ -26,7 +26,6 @@ class Order extends Model implements HasMedia
         'parent_order_id' => 'integer',
         'payment_id' => 'integer',
         'delivery_man_id' => 'integer',
-
         'total_weight' => 'double',
         'total_distance' => 'double',
         'fixed_charges' => 'double',
@@ -38,16 +37,19 @@ class Order extends Model implements HasMedia
         'auto_assign' => 'integer',
         'total_parcel' => 'integer',
     ];
-    public function client(){
-        return $this->belongsTo(User::class, 'client_id','id');
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id', 'id');
     }
 
-    public function delivery_man(){
-        return $this->belongsTo(User::class, 'delivery_man_id','id');
+    public function delivery_man()
+    {
+        return $this->belongsTo(User::class, 'delivery_man_id', 'id');
     }
 
-    public function payment(){
-        return $this->belongsTo(Payment::class, 'payment_id','id');
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 
     public function retunOrdered()
@@ -55,51 +57,46 @@ class Order extends Model implements HasMedia
         return $this->hasMany(Order::class, 'parent_order_id');
     }
 
-    public function scopeMyOrder($query){
+    public function scopeMyOrder($query)
+    {
         $user = auth()->user();
-        if(in_array($user->user_type, ['admin','demo_admin'])) {
+        if (in_array($user->user_type, ['admin', 'demo_admin'])) {
             return $query;
             // return $query->withTrashed();
         }
 
-        if($user->user_type == 'client') {
+        if ($user->user_type == 'client') {
             return $query->where('client_id', $user->id);
         }
 
-        if($user->user_type == 'delivery_man')
-        {
-            return $query->whereHas('delivery_man',function ($q) use($user) {
-                $q->where('delivery_man_id',$user->id);
+        if ($user->user_type == 'delivery_man') {
+            return $query->whereHas('delivery_man', function ($q) use ($user) {
+                $q->where('delivery_man_id', $user->id);
             });
         }
         return $query;
     }
 
-    public function orderHistory(){
-        return $this->hasMany(OrderHistory::class,'order_id','id')->withTrashed();
+    public function orderHistory()
+    {
+        return $this->hasMany(OrderHistory::class, 'order_id', 'id')->withTrashed();
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
         static::deleted(function ($row) {
             $row->orderHistory()->delete();
-            if($row->forceDeleting === true)
-            {
+            if ($row->forceDeleting === true) {
                 $row->orderHistory()->forceDelete();
             }
         });
-        static::restoring(function($row) {
+        static::restoring(function ($row) {
             $row->orderHistory()->withTrashed()->restore();
         });
     }
 
     public function getPickupPointAttribute($value)
-    {
-        $val = isset($value) ? json_decode($value, true) : null;
-        return $val;
-    }
-
-    public function getDeliveryPointAttribute($value)
     {
         $val = isset($value) ? json_decode($value, true) : null;
         return $val;
@@ -114,11 +111,6 @@ class Order extends Model implements HasMedia
     public function setPickupPointAttribute($value)
     {
         $this->attributes['pickup_point'] = isset($value) ? json_encode($value) : null;
-    }
-
-    public function setDeliveryPointAttribute($value)
-    {
-        $this->attributes['delivery_point'] = isset($value) ? json_encode($value) : null;
     }
 
     public function setExtraChargesAttribute($value)
@@ -139,14 +131,16 @@ class Order extends Model implements HasMedia
         return isset($value) ? Carbon::parse($value)->format('Y-m-d H:i:s') : null;
     }
 
-    public function country(){
-        return $this->belongsTo(Country::class, 'country_id','id');
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
-    public function city(){
-        return $this->belongsTo(City::class, 'city_id','id');
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
-    
+
     public function getCancelledDeliveryManIdsAttribute($value)
     {
         $val = isset($value) ? json_decode($value, true) : [];
@@ -156,5 +150,10 @@ class Order extends Model implements HasMedia
     public function setCancelledDeliveryManIdsAttribute($value)
     {
         $this->attributes['cancelled_delivery_man_ids'] = isset($value) ? json_encode($value) : [];
+    }
+
+    public function deliveryPoints()
+    {
+        return $this->hasMany(DeliveryPoint::class);
     }
 }

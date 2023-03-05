@@ -9,6 +9,7 @@ use App\Models\StaticData;
 use App\Models\Notification;
 use App\Traits\OrderTrait;
 use App\Models\AppSetting;
+use App\Models\DeliveryPoint;
 
 class OrderController extends Controller
 {
@@ -44,6 +45,14 @@ class OrderController extends Controller
         $data = $request->all();
 
         $result = Order::updateOrCreate(['id' => $request->id], $data);
+
+        $delivery_point = $request->delivery_point;
+        for ($count = 0; $count < $delivery_point; $count++) {
+            DeliveryPoint::create([
+                'order_id' => $result->id,
+                'delivery_point' => $request->delivery_point[$count],
+            ]);
+        }
 
         $message = __('message.update_form', ['form' => __('message.order')]);
         if ($result->wasRecentlyCreated) {
