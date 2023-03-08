@@ -39,7 +39,7 @@ class CreateOrdersTable extends Migration
             $table->double('distance_charge')->nullable()->default('0');
             $table->json('extra_charges')->nullable();
             $table->double('total_amount')->nullable()->default('0');
-            $table->string('courier_will_carry');
+            $table->boolean('courier_will_carry');
             $table->tinyInteger('pickup_confirm_by_client')->nullable()->default('0')->comment('0-not confirm , 1 - confirm');
             $table->tinyInteger('pickup_confirm_by_delivery_man')->nullable()->default('0')->comment('0-not confirm , 1 - confirm');
             $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
