@@ -15,7 +15,7 @@ class Order extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
 
-    protected $fillable = ['client_id', 'date', 'pickup_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'auto_assign', 'cancelled_delivery_man_ids'];
+    protected $fillable = ['client_id', 'date', 'pickup_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'courier_will_carry', 'auto_assign', 'cancelled_delivery_man_ids'];
 
     protected $casts = [
         'client_id' => 'integer',
