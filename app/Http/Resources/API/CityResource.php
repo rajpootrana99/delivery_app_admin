@@ -33,6 +33,7 @@ class CityResource extends JsonResource
             'max_weight'        => $this->max_weight,
             'per_distance_charges' => $this->per_distance_charges,
             'per_weight_charges' => $this->per_weight_charges,
+            'charge_per_address' => $this->charge_per_address,
             'created_at'         => $this->created_at,
             'updated_at'         => $this->updated_at,
             'deleted_at'         => $this->deleted_at,

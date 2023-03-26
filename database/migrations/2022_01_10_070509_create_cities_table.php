@@ -28,6 +28,7 @@ class CreateCitiesTable extends Migration
             $table->double('max_weight')->nullable()->default('0');
             $table->double('per_distance_charges')->nullable()->default('0');
             $table->double('per_weight_charges')->nullable()->default('0');
+            $table->double('charge_per_address')->nullable()->default('0');
             $table->tinyInteger('status')->nullable()->default('1');
             $table->timestamps();
             $table->softDeletes();

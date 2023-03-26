@@ -11,7 +11,7 @@ class City extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [ 'country_id', 'name', 'vehicle_type', 'order_type', 'address', 'fixed_charges', 'cancel_charges', 'min_distance', 'min_weight', 'max_distance', 'max_weight', 'per_distance_charges', 'per_weight_charges', 'status'];
+    protected $fillable = ['country_id', 'name', 'vehicle_type', 'order_type', 'address', 'fixed_charges', 'cancel_charges', 'min_distance', 'min_weight', 'max_distance', 'max_weight', 'per_distance_charges', 'per_weight_charges', 'charge_per_address', 'status'];
 
 
     protected $casts = [
@@ -26,19 +26,23 @@ class City extends Model
         'max_weight' => 'double',
         'per_distance_charges' => 'double',
         'per_weight_charges' => 'double',
+        'charge_per_address' => 'double',
         'status' => 'integer',
     ];
 
-    public function country(){
-        return $this->belongsTo(Country::class, 'country_id','id');
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
-    public function extraCharges(){
-        return $this->hasMany(ExtraCharge::class,'city_id','id');
+    public function extraCharges()
+    {
+        return $this->hasMany(ExtraCharge::class, 'city_id', 'id');
     }
 
-    public function extraChargesActive(){
-        return $this->extraCharges()->where('status',1);
+    public function extraChargesActive()
+    {
+        return $this->extraCharges()->where('status', 1);
     }
 
     protected static function boot()
@@ -46,12 +50,11 @@ class City extends Model
         parent::boot();
         static::deleted(function ($row) {
             $row->extraCharges()->delete();
-            if($row->forceDeleting === true)
-            {
+            if ($row->forceDeleting === true) {
                 $row->extraCharges()->forceDelete();
             }
         });
-        static::restoring(function($row) {
+        static::restoring(function ($row) {
             $row->extraCharges()->withTrashed()->restore();
         });
     }

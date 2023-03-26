@@ -17,7 +17,6 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id')->nullable();
             $table->json('pickup_point')->nullable();
-            // $table->json('delivery_point')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
             $table->string('vehicle_type');
