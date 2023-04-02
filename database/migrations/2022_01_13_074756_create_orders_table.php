@@ -36,6 +36,7 @@ class CreateOrdersTable extends Migration
             $table->double('fixed_charges')->nullable()->default('0');
             $table->double('weight_charge')->nullable()->default('0');
             $table->double('distance_charge')->nullable()->default('0');
+            $table->double('charge_per_address')->nullable()->default('0');
             $table->json('extra_charges')->nullable();
             $table->double('total_amount')->nullable()->default('0');
             $table->boolean('courier_will_carry');

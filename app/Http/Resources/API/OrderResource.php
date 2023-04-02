@@ -45,6 +45,7 @@ class OrderResource extends JsonResource
             'delivery_man_name'             => optional($this->delivery_man)->name,
             'fixed_charges'                 => $this->fixed_charges,
             'extra_charges'                 => $this->extra_charges,
+            'charge_per_address'            => $this->charge_per_address,
             'total_amount'                  => $this->total_amount,
             'total_parcel'                  => $this->total_parcel,
             'courier_will_carry'            => $this->courier_will_carry,
