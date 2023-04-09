@@ -58,9 +58,10 @@ class OrderController extends Controller
                 'order_id' => $result->id,
                 'delivery_point' => $delivery,
             ];
+            DeliveryPoint::create($save_data[$i]);
             $i++;
         }
-        DeliveryPoint::insert($save_data);
+        // DeliveryPoint::insert($save_data);
 
         $message = __('message.update_form', ['form' => __('message.order')]);
         if ($result->wasRecentlyCreated) {
