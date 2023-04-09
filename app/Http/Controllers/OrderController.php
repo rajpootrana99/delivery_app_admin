@@ -47,17 +47,19 @@ class OrderController extends Controller
         // $response = [
         //         'message' => $
         //     ];
-            // return json_custom_response($response);
+        // return json_custom_response($response);
 
-        $delivery_point = $request->delivery_point;
-        
+
+
         $result = Order::updateOrCreate(['id' => $request->id], $data);
-        for ($count = 0; $count < count($delivery_point); $count++) {
-            DeliveryPoint::create([
+        $save_data = [];
+        foreach ($data['delivery_point'] as $key => $delivery) {
+            $save_data[] = [
                 'order_id' => $result->id,
-                'delivery_point' => $request->delivery_point[$count],
-            ]);
+                'delivery_point' => $data['delivery_point'][$key],
+            ];
         }
+        DeliveryPoint::insert($save_data);
 
         $message = __('message.update_form', ['form' => __('message.order')]);
         if ($result->wasRecentlyCreated) {
