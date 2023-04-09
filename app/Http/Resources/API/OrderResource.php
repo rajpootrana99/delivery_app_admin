@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
             'date'                          => $this->date,
             'readable_date'                 => timeAgoFormat($this->created_at),
             'pickup_point'                  => $this->pickup_point,
-            'delivery_point'                => 'Hello to the future',
+            'delivery_point'                => $this->deliveryPoints,
             'country_id'                    => $this->country_id,
             'country_name'                  => optional($this->country)->name,
             'city_id'                       => $this->city_id,

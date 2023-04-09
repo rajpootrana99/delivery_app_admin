@@ -16,11 +16,10 @@ class OrderController extends Controller
     {
         $order = Order::myOrder();
 
-        if( $request->has('status') && isset($request->status) ) {
-            if(request('status') == 'trashed')
-            {
+        if ($request->has('status') && isset($request->status)) {
+            if (request('status') == 'trashed') {
                 $order = $order->withTrashed();
-            }else {
+            } else {
                 $order = $order->where('status', request('status'));
             }
         };
@@ -28,10 +27,10 @@ class OrderController extends Controller
         $order->when(request('client_id'), function ($q) {
             return $q->where('client_id', request('client_id'));
         });
-        
+
         $order->when(request('delivery_man_id'), function ($query) {
-            return $query->whereHas('delivery_man',function ($q) {
-                $q->where('delivery_man_id',request('delivery_man_id'));
+            return $query->whereHas('delivery_man', function ($q) {
+                $q->where('delivery_man_id', request('delivery_man_id'));
             });
         });
 
@@ -43,21 +42,20 @@ class OrderController extends Controller
             return $q->where('city_id', request('city_id'));
         });
 
-        if( request('from_date') != null && request('to_date') != null ){
-            $order = $order->whereBetween('date',[ request('from_date'), request('to_date')]);
+        if (request('from_date') != null && request('to_date') != null) {
+            $order = $order->whereBetween('date', [request('from_date'), request('to_date')]);
         }
         $per_page = config('constant.PER_PAGE_LIMIT');
-        if( $request->has('per_page') && !empty($request->per_page)){
-            if(is_numeric($request->per_page))
-            {
+        if ($request->has('per_page') && !empty($request->per_page)) {
+            if (is_numeric($request->per_page)) {
                 $per_page = $request->per_page;
             }
-            if($request->per_page == -1 ){
+            if ($request->per_page == -1) {
                 $per_page = $order->count();
             }
         }
 
-        $order = $order->orderBy('date','desc')->paginate($per_page);
+        $order = $order->orderBy('date', 'desc')->paginate($per_page);
         $items = OrderResource::collection($order);
 
         $user = auth()->user();
@@ -68,32 +66,32 @@ class OrderController extends Controller
             'data' => $items,
             'all_unread_count' => $all_unread_count,
         ];
-        
+
         return json_custom_response($response);
     }
 
     public function getDetail(Request $request)
     {
         $id = $request->id;
-        $order = Order::where('id',$id)->withTrashed()->first();
+        $order = Order::with('deliveryPoints')->where('id', $id)->withTrashed()->first();
 
-        if($order == null){
-            return json_message_response(__('message.not_found_entry',['name' => __('message.order')]),400);
+        if ($order == null) {
+            return json_message_response(__('message.not_found_entry', ['name' => __('message.order')]), 400);
         }
         $order_detail = new OrderDetailResource($order);
 
         $order_history = optional($order)->orderHistory;
 
         $current_user = auth()->user();
-        if(count($current_user->unreadNotifications) > 0 ) {
-            $current_user->unreadNotifications->where('data.id',$id)->markAsRead();
+        if (count($current_user->unreadNotifications) > 0) {
+            $current_user->unreadNotifications->where('data.id', $id)->markAsRead();
         }
 
         $response = [
             'data' => $order_detail,
             'order_history' => $order_history
         ];
-        
+
         return json_custom_response($response);
     }
 }
