@@ -50,7 +50,6 @@ class OrderController extends Controller
         // return json_custom_response($response);
 
 
-        return response()->json($data['delivery_point']);
         $result = Order::updateOrCreate(['id' => $request->id], $data);
         $save_data = [];
         foreach ($data['delivery_point'] as $key => $delivery) {
@@ -59,6 +58,7 @@ class OrderController extends Controller
                 'delivery_point' => $data['delivery_point'][$key],
             ];
         }
+        return response()->json($save_data);
         DeliveryPoint::insert($save_data);
 
         $message = __('message.update_form', ['form' => __('message.order')]);
