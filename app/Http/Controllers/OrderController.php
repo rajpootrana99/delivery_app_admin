@@ -55,7 +55,7 @@ class OrderController extends Controller
         foreach ($data['delivery_point'] as $key => $delivery) {
             $save_data[] = [
                 'order_id' => $result->id,
-                'delivery_point' => $data['delivery_point'][$key],
+                'delivery_point' => $delivery[$key],
             ];
         }
         return response()->json($save_data);
