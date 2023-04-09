@@ -43,11 +43,16 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
-        $result = Order::updateOrCreate(['id' => $request->id], $data);
+        // return response()->json($request->all());
+        // $response = [
+        //         'message' => $
+        //     ];
+            // return json_custom_response($response);
 
         $delivery_point = $request->delivery_point;
-        for ($count = 0; $count < $delivery_point; $count++) {
+        
+        $result = Order::updateOrCreate(['id' => $request->id], $data);
+        for ($count = 0; $count < count($delivery_point); $count++) {
             DeliveryPoint::create([
                 'order_id' => $result->id,
                 'delivery_point' => $request->delivery_point[$count],
