@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function getList(Request $request)
     {
-        $order = Order::with('deliveryPoints')->myOrder();
+        $order = Order::myOrder();
 
         if ($request->has('status') && isset($request->status)) {
             if (request('status') == 'trashed') {
