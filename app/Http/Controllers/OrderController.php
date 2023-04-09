@@ -52,8 +52,10 @@ class OrderController extends Controller
 
         $result = Order::updateOrCreate(['id' => $request->id], $data);
         $save_data = [];
+        $i = 0;
         foreach ($data['delivery_point'] as $delivery) {
-            $save_data[] = 1;
+            $save_data[$i] = 1;
+            $i++
             // $save_data[] = [
             //     'order_id' => $result->id,
             //     'delivery_point' => $delivery,
