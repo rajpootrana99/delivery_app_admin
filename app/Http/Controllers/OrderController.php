@@ -54,12 +54,11 @@ class OrderController extends Controller
         $save_data = [];
         $i = 0;
         foreach ($data['delivery_point'] as $delivery) {
-            $save_data[$i] = 1;
+            $save_data[$i] = [
+                'order_id' => $result->id,
+                'delivery_point' => $delivery,
+            ];
             $i++;
-            // $save_data[] = [
-            //     'order_id' => $result->id,
-            //     'delivery_point' => $delivery,
-            // ];
         }
         return response()->json($save_data);
         DeliveryPoint::insert($save_data);
