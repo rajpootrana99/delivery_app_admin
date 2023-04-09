@@ -55,7 +55,7 @@ class OrderController extends Controller
         $i = 0;
         foreach ($data['delivery_point'] as $delivery) {
             $save_data[$i] = 1;
-            $i++
+            $i++;
             // $save_data[] = [
             //     'order_id' => $result->id,
             //     'delivery_point' => $delivery,
