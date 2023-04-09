@@ -60,7 +60,6 @@ class OrderController extends Controller
             ];
             $i++;
         }
-        return response()->json($save_data);
         DeliveryPoint::insert($save_data);
 
         $message = __('message.update_form', ['form' => __('message.order')]);
