@@ -91,7 +91,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('order-action', [App\Http\Controllers\OrderController::class, 'action']);
 
     Route::post('paymentgateway-save', [App\Http\Controllers\PaymentGatewayController::class, 'store']);
-    Route::post('paymentgateway-delete', [App\Http\Controllers\PaymentGatewayController::class, 'destroy']);
+    Route::delete('paymentgateway-delete/{id}', [App\Http\Controllers\PaymentGatewayController::class, 'destroy']);
 
 
     Route::post('payment-save', [API\PaymentController::class, 'paymentSave']);
