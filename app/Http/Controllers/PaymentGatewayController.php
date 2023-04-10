@@ -38,15 +38,15 @@ class PaymentGatewayController extends Controller
         $data = $request->all();
 
         $result = PaymentGateway::updateOrCreate(['id' => $request->id], $data);
-        uploadMediaFile($result,$request->gateway_logo,'gateway_logo');
-        $message = __('message.update_form',[ 'form' => __('message.payment_gateway') ] );
-		if($result->wasRecentlyCreated) {
-			$message = __('message.save_form',[ 'form' => __('message.payment_gateway') ] );
-		}
+        uploadMediaFile($result, $request->gateway_logo, 'gateway_logo');
+        $message = __('message.update_form', ['form' => __('message.payment_gateway')]);
+        if ($result->wasRecentlyCreated) {
+            $message = __('message.save_form', ['form' => __('message.payment_gateway')]);
+        }
 
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             return json_message_response($message);
-		}
+        }
     }
 
     /**
@@ -91,6 +91,8 @@ class PaymentGatewayController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $payment_gateway = PaymentGateway::find($id);
+        $payment_gateway->delete();
+        return json_custom_response(['message' => 'Payment Gateway Deleted Successfully', 'status' => true]);
     }
 }
