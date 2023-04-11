@@ -15,7 +15,7 @@ class Order extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
 
-    protected $fillable = ['client_id', 'date', 'pickup_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'charge_per_address', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'courier_will_carry', 'auto_assign', 'cancelled_delivery_man_ids'];
+    protected $fillable = ['client_id', 'date', 'pickup_point', 'delivery_point', 'selected_delivery_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'charge_per_address', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'courier_will_carry', 'auto_assign', 'cancelled_delivery_man_ids'];
 
     protected $casts = [
         'client_id' => 'integer',
@@ -119,6 +119,28 @@ class Order extends Model implements HasMedia
         $this->attributes['extra_charges'] = isset($value) ? json_encode($value) : null;
     }
 
+    public function getDeliveryPointAttribute($value)
+    {
+        $val = isset($value) ? json_decode($value, true) : null;
+        return $val;
+    }
+
+    public function setDeliveryPointAttribute($value)
+    {
+        $this->attributes['delivery_point'] = isset($value) ? json_encode($value) : null;
+    }
+
+    public function getSelectedDeliveryPointAttribute($value)
+    {
+        $val = isset($value) ? json_decode($value, true) : null;
+        return $val;
+    }
+
+    public function setSelectedDeliveryPointAttribute($value)
+    {
+        $this->attributes['selected_delivery_point'] = isset($value) ? json_encode($value) : null;
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return isset($value) ? Carbon::parse($value)->format('Y-m-d H:i:s') : null;
@@ -151,10 +173,5 @@ class Order extends Model implements HasMedia
     public function setCancelledDeliveryManIdsAttribute($value)
     {
         $this->attributes['cancelled_delivery_man_ids'] = isset($value) ? json_encode($value) : [];
-    }
-
-    public function deliveryPoints()
-    {
-        return $this->hasMany(DeliveryPoint::class);
     }
 }

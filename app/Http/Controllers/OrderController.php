@@ -43,24 +43,18 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // return response()->json($request->all());
-        // $response = [
-        //         'message' => $
-        //     ];
-        // return json_custom_response($response);
-
 
         $result = Order::updateOrCreate(['id' => $request->id], $data);
-        $save_data = [];
-        $i = 0;
-        foreach ($data['delivery_point'] as $delivery) {
-            $save_data[$i] = [
-                'order_id' => $result->id,
-                'delivery_point' => $delivery,
-            ];
-            $i++;
-        }
-        DeliveryPoint::insert($save_data);
+        // $save_data = [];
+        // $i = 0;
+        // foreach ($data['delivery_point'] as $delivery) {
+        //     $save_data[$i] = [
+        //         'order_id' => $result->id,
+        //         'delivery_point' => $delivery,
+        //     ];
+        //     $i++;
+        // }
+        // DeliveryPoint::insert($save_data);
 
         $message = __('message.update_form', ['form' => __('message.order')]);
         if ($result->wasRecentlyCreated) {

@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function getList(Request $request)
     {
-        $order = Order::with('deliveryPoints')->myOrder();
+        $order = Order::myOrder();
 
         if ($request->has('status') && isset($request->status)) {
             if (request('status') == 'trashed') {
@@ -73,7 +73,7 @@ class OrderController extends Controller
     public function getDetail(Request $request)
     {
         $id = $request->id;
-        $order = Order::with('deliveryPoints')->where('id', $id)->withTrashed()->first();
+        $order = Order::where('id', $id)->withTrashed()->first();
 
         if ($order == null) {
             return json_message_response(__('message.not_found_entry', ['name' => __('message.order')]), 400);
