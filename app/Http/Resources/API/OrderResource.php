@@ -50,6 +50,7 @@ class OrderResource extends JsonResource
             'total_amount'                  => $this->total_amount,
             'total_parcel'                  => $this->total_parcel,
             'courier_will_carry'            => $this->courier_will_carry,
+            'carry_packages_charge'         => $this->carry_packages_charge,
             'reason'                        => $this->reason,
             'pickup_confirm_by_client'      => $this->pickup_confirm_by_client,
             'pickup_confirm_by_delivery_man' => $this->pickup_confirm_by_delivery_man,

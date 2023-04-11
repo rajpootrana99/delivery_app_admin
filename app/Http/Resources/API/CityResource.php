@@ -34,7 +34,6 @@ class CityResource extends JsonResource
             'per_distance_charges' => $this->per_distance_charges,
             'per_weight_charges' => $this->per_weight_charges,
             'charge_per_address' => $this->charge_per_address,
-            'carry_packages_charge' => $this->carry_packages_charge,
             'created_at'         => $this->created_at,
             'updated_at'         => $this->updated_at,
             'deleted_at'         => $this->deleted_at,

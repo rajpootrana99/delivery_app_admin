@@ -11,7 +11,7 @@ class City extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['country_id', 'name', 'vehicle_type', 'order_type', 'address', 'fixed_charges', 'cancel_charges', 'min_distance', 'min_weight', 'max_distance', 'max_weight', 'per_distance_charges', 'per_weight_charges', 'carry_packages_charge', 'charge_per_address', 'status'];
+    protected $fillable = ['country_id', 'name', 'vehicle_type', 'order_type', 'address', 'fixed_charges', 'cancel_charges', 'min_distance', 'min_weight', 'max_distance', 'max_weight', 'per_distance_charges', 'per_weight_charges', 'charge_per_address', 'status'];
 
 
     protected $casts = [
@@ -27,7 +27,6 @@ class City extends Model
         'per_distance_charges' => 'double',
         'per_weight_charges' => 'double',
         'charge_per_address' => 'double',
-        'carry_packages_charge' => 'double',
         'status' => 'integer',
     ];
 
