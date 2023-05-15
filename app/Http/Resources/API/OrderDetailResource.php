@@ -51,6 +51,7 @@ class OrderDetailResource extends JsonResource
             'total_parcel'                  => $this->total_parcel,
             'carry_packages_charge'         => $this->carry_packages_charge,
             'reason'                        => $this->reason,
+            'delivery_receiver_name'        => $this->delivery_receiver_name,
             'pickup_confirm_by_client'      => $this->pickup_confirm_by_client,
             'pickup_confirm_by_delivery_man' => $this->pickup_confirm_by_delivery_man,
             'pickup_time_signature'     =>  getSingleMedia($this, 'pickup_time_signature', null),

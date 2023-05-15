@@ -33,6 +33,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->text('reason')->nullable();
             $table->string('status')->nullable();
+            $table->string('delivery_receiver_name')->nullable();
             $table->string('payment_collect_from')->nullable()->comment('on_pickup, on_delivery');
             $table->unsignedBigInteger('delivery_man_id')->nullable();
             $table->double('fixed_charges')->nullable()->default('0');

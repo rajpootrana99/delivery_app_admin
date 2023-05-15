@@ -15,7 +15,7 @@ class Order extends Model implements HasMedia
     use SoftDeletes;
     use InteractsWithMedia;
 
-    protected $fillable = ['client_id', 'date', 'pickup_point', 'delivery_point', 'selected_delivery_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'carry_packages_charge', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'charge_per_address', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'courier_will_carry', 'auto_assign', 'cancelled_delivery_man_ids'];
+    protected $fillable = ['client_id', 'delivery_receiver_name', 'date', 'pickup_point', 'delivery_point', 'selected_delivery_point', 'country_id', 'city_id', 'vehicle_type', 'order_type', 'parcel_type', 'carry_packages_charge', 'total_weight', 'total_distance', 'pickup_datetime', 'delivery_datetime', 'parent_order_id', 'status', 'payment_id', 'payment_collect_from', 'delivery_man_id', 'fixed_charges', 'extra_charges', 'total_amount', 'charge_per_address', 'pickup_confirm_by_client', 'pickup_confirm_by_delivery_man', 'reason', 'weight_charge', 'distance_charge', 'total_parcel', 'courier_will_carry', 'auto_assign', 'cancelled_delivery_man_ids'];
 
     protected $casts = [
         'client_id' => 'integer',
@@ -23,6 +23,7 @@ class Order extends Model implements HasMedia
         'city_id' => 'integer',
         'vehicle_type' => 'string',
         'order_type' => 'string',
+        'delivery_receiver_name' => 'string',
         'parent_order_id' => 'integer',
         'payment_id' => 'integer',
         'delivery_man_id' => 'integer',
