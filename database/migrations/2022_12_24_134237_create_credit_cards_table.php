@@ -18,7 +18,7 @@ class CreateCreditCardsTable extends Migration
             $table->string("cardholder");
             $table->string("expireddate");
             $table->integer("ccv");
-            $table->unsignedBigInteger("number");
+            $table->string("number");
             $table->integer("user_id");
 
 
